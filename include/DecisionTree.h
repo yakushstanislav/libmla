@@ -57,32 +57,32 @@ public:
             delete _rightNode;
     }
 
-    inline T getFeatureValue()
+    inline T getFeatureValue() const
     {
         return _value;
     }
 
-    inline std::size_t getFeatureIndex()
+    inline std::size_t getFeatureIndex() const
     {
         return _index;
     }
 
-    inline C getClass()
+    inline C getClass() const
     {
         return _class;
     }
 
-    inline bool isLeaf()
+    inline bool isLeaf() const
     {
         return _leftNode == nullptr && _rightNode == nullptr;
     }
 
-    inline Node<T, C>* getLeftNode()
+    inline Node<T, C>* getLeftNode() const
     {
         return _leftNode;
     }
 
-    inline Node<T, C>* getRightNode()
+    inline Node<T, C>* getRightNode() const
     {
         return _rightNode;
     }
