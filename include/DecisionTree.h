@@ -27,24 +27,24 @@ namespace MLA {
 
 namespace DT {
 
-template<typename T, typename C>
+template<typename T, typename L>
 class Node
 {
 public:
     Node(const T value, const std::size_t index,
-        const Node<T, C>* leftNode,
-        const Node<T, C>* rightNode) :
+        const Node<T, L>* leftNode,
+        const Node<T, L>* rightNode) :
         _value(value), _index(index)
     {
         assert(leftNode);
         assert(rightNode);
 
-        _leftNode = const_cast<Node<T, C>*>(leftNode);
-        _rightNode = const_cast<Node<T, C>*>(rightNode);
+        _leftNode = const_cast<Node<T, L>*>(leftNode);
+        _rightNode = const_cast<Node<T, L>*>(rightNode);
     }
 
-    Node(const C value) :
-        _class(value), _leftNode(nullptr), _rightNode(nullptr)
+    Node(const L label) :
+        _label(label), _leftNode(nullptr), _rightNode(nullptr)
     {
     }
 
@@ -67,9 +67,9 @@ public:
         return _index;
     }
 
-    inline C getClass() const
+    inline L getLabel() const
     {
-        return _class;
+        return _label;
     }
 
     inline bool isLeaf() const
@@ -77,42 +77,42 @@ public:
         return _leftNode == nullptr && _rightNode == nullptr;
     }
 
-    inline Node<T, C>* getLeftNode() const
+    inline Node<T, L>* getLeftNode() const
     {
         return _leftNode;
     }
 
-    inline Node<T, C>* getRightNode() const
+    inline Node<T, L>* getRightNode() const
     {
         return _rightNode;
     }
 
 private:
     T _value;
-    C _class;
+    L _label;
     std::size_t _index;
-    Node<T, C>* _leftNode;
-    Node<T, C>* _rightNode;
+    Node<T, L>* _leftNode;
+    Node<T, L>* _rightNode;
 };
 
-template<typename T, typename C>
+template<typename T, typename L>
 class DecisionTree
 {
 public:
-    DecisionTree(const std::shared_ptr<Node<T, C>> rootNode, const std::function<bool(T, T)> predicate) :
+    DecisionTree(const std::shared_ptr<Node<T, L>> rootNode, const std::function<bool(T, T)> predicate) :
         _rootNode(rootNode), _predicate(predicate)
     {
     }
 
-    C predict(const std::vector<T>& data)
+    L predict(const std::vector<T>& data)
     {
-        Node<T, C>* nextNode = _rootNode.get();
+        Node<T, L>* nextNode = _rootNode.get();
 
         for (;;)
         {
             if (nextNode->isLeaf())
             {
-                return nextNode->getClass();
+                return nextNode->getLabel();
             }
 
             const std::size_t index = nextNode->getFeatureIndex();
@@ -131,7 +131,7 @@ public:
 
 private:
     std::function<bool(T, T)> _predicate;
-    std::shared_ptr<Node<T, C>> _rootNode;
+    std::shared_ptr<Node<T, L>> _rootNode;
 };
 
 };
