@@ -28,6 +28,30 @@ namespace MLA {
 namespace DT {
 
 template<typename T, typename L>
+struct Data
+{
+public:
+    Data(const std::vector<T>& data, const L label) :
+        _data(data), _label(label)
+    {
+    }
+
+    std::vector<T> getData() const
+    {
+        return _data;
+    }
+
+    L getLabel() const
+    {
+        return _label;
+    }
+
+private:
+    std::vector<T> _data;
+    L _label;
+};
+
+template<typename T, typename L>
 class Node
 {
 public:

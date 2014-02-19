@@ -20,17 +20,46 @@
    SOFTWARE.
 */
 
-#ifndef __MLA_H__
-#define __MLA_H__
+#ifndef __MLA_DATASET_H__
+#define __MLA_DATASET_H__
 
-#include <cstddef>
-#include <cstring>
-#include <cassert>
-#include <functional>
-#include <memory>
-#include <vector>
+namespace MLA {
 
-#include "DataSet.h"
-#include "DecisionTree.h"
+template<typename T>
+class DataSet
+{
+public:
+    inline void insert(const T& data)
+    {
+        _dataset.push_back(data);
+    }
+
+    inline T& get(const std::size_t index)
+    {
+        assert(index < _dataset.size());
+
+        return _dataset[index];
+    }
+
+    inline T& operator[](const std::size_t index)
+    {
+        return get(index);
+    }
+
+    inline std::size_t size() const
+    {
+        return _dataset.size();
+    }
+
+    inline void clear()
+    {
+        _dataset.clear();
+    }
+
+private:
+    std::vector<T> _dataset;
+};
+
+};
 
 #endif
