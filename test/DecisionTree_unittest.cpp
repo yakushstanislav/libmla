@@ -36,33 +36,41 @@ TEST(DicisionTree, RGBClassifier)
 
     enum Color
     {
+        White,
         Red,
         Green,
         Blue,
         Magenta,
         Yellow,
-        Cyan
+        Cyan,
+        Black
     };
 
     typedef Node<State, Color> RGBNode;
 
+    const std::vector<State> whiteColor = {ON, ON, ON};
     const std::vector<State> redColor = {ON, OFF, OFF};
     const std::vector<State> greenColor = {OFF, ON, OFF};
     const std::vector<State> blueColor = {OFF, OFF, ON};
     const std::vector<State> magentaColor = {ON, OFF, ON};
     const std::vector<State> yellowColor = {ON, ON, OFF};
     const std::vector<State> cyanColor = {OFF, ON, ON};
+    const std::vector<State> blackColor = {OFF, OFF, OFF};
 
     const std::shared_ptr<RGBNode> node(
         new RGBNode(ON, 0,
             new RGBNode(ON, 1,
-                new RGBNode(Yellow),
-                new RGBNode(OFF, 2,
-                    new RGBNode(Red),
-                    new RGBNode(Magenta))
+                new RGBNode(ON, 2,
+                    new RGBNode(White),
+                    new RGBNode(Yellow)),
+                new RGBNode(ON, 2,
+                    new RGBNode(Magenta),
+                    new RGBNode(Red))
             ),
             new RGBNode(OFF, 1,
-                new RGBNode(Blue),
+                new RGBNode(OFF, 2,
+                    new RGBNode(Black),
+                    new RGBNode(Blue)),
                 new RGBNode(OFF, 2,
                     new RGBNode(Green),
                     new RGBNode(Cyan))
@@ -74,10 +82,12 @@ TEST(DicisionTree, RGBClassifier)
         return a == b;
     });
 
+    EXPECT_EQ(tree.predict(whiteColor), White);
     EXPECT_EQ(tree.predict(redColor), Red);
     EXPECT_EQ(tree.predict(greenColor), Green);
     EXPECT_EQ(tree.predict(blueColor), Blue);
     EXPECT_EQ(tree.predict(magentaColor), Magenta);
     EXPECT_EQ(tree.predict(yellowColor), Yellow);
     EXPECT_EQ(tree.predict(cyanColor), Cyan);
+    EXPECT_EQ(tree.predict(blackColor), Black);
 }
